@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do</title>
+
+    <!-- css Link -->
+    <link rel="stylesheet" href="style/style.css" />
+
+    <!-- google materil link  -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Round|Material+Icons+Outlined"
+      rel="stylesheet"
+    />
+
+    <!-- google fonts link  -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Alert Message -->
+    <!-- <div class="alert-msg"></div> -->
+
+    <!-- header  -->
+    <header>
+      <div class="menu">
+        <span class="material-icons-round">drag_handle</span>
+      </div>
+
+      <div class="btns">
+        <input type="search" name="" id="" />
+        <span class="material-icons-round">search</span>
+        <span class="material-icons-round">notifications</span>
+      </div>
+    </header>
+
+    <!-- main  -->
+    <main>
+      <!-- user greeting heading  -->
+      <section class="greetings-container">
+        <h1 class="greetings">What's Up<span class="user-name">User</span></h1>
+      </section>
+
+      <!-- categories -->
+      <section class="categories-container">
+        <h3 class="categories-heading">categories</h3>
+
+        <acticle class="categories-card-container">
+          <!-- single categories card start  -->
+
+          <article class="categories-card">
+            <h4 class="total-task">10 task</h4>
+            <h2 class="categories-type">personal</h2>
+            <div class="progress-bar"></div>
+          </article>
+
+          <!-- single categories card end  -->
+
+          <!-- single categories card start  -->
+
+          <article class="categories-card">
+            <h4 class="total-task">10 task</h4>
+            <h2 class="categories-type">personal</h2>
+            <span class="progress-bar"></span>
+          </article>
+
+          <!-- single categories card end  -->
+
+          <!-- single categories card start  -->
+
+          <article class="categories-card">
+            <h4 class="total-task">10 task</h4>
+            <h2 class="categories-type">personal</h2>
+            <span class="progress-bar"></span>
+          </article>
+
+          <!-- single categories card end  -->
+        </acticle>
+      </section>
+
+      <!-- todo container  -->
+      <section class="todo">
+        <h3 class="todo-heading">Today's Task</h3>
+        <article class="todo-container">
+          <!-- singele todo card start  -->
+          <!-- <article class="todo-card">
+            <div class="check-btn">
+              <span class="uncheck material-icons-round"
+                >radio_button_unchecked</span
+              >
+              <span class="check material-icons-round" style="display: none;">check_circle</span>
+            </div>
+            <h2 class="todo-text">
+              need to complete some task
+            </h2>
+            <span delete-btnan class="clear material-icons-round delete-btn"
+              >clear</span
+          </article> -->
+          <!-- singele todo card end  -->
+        </article>
+      </section>
+
+      <div class="form-popup-btn">
+        <span class="material-icons-round">add</span>
+      </div>
+    </main>
+
+    <!-- taking todo form  -->
+    <form class="todo-form">
+      <!-- <button class="close-btn"><span class="material-icons-round">close</span></button> -->
+      <!-- <div class="btns">
+        <button class="date-picker">today</button>
+        <input type="text" class="catagory-select" placeholder="categorie" />
+      </div> -->
+      <input type="text" class="todo-input" placeholder="enter next task..." />
+      <button class="todo-add-btn">Add</button>
+    </form>
+
+    <!-- script link  -->
+  </body>
+  <script src="js/app.js" defer></script>
+</html>
