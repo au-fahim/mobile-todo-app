@@ -60,13 +60,21 @@ h3 {
   position: fixed;
   background: #f44336;
   color: white;
-  padding: 0.8rem 1.5rem;
   border-radius: 1rem;
   font-family: var(--roboto);
-  font-size: 0.9rem;
-  right: 13.5%;
-  top: 10%;
+  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  right: -100%;
+  top: 17%;
   cursor: pointer;
+  transition: 0.6s ease;
+  z-index: 999;
+  box-shadow: 0 8px 8px -6px #04216ebe;
+}
+/* Alert Message Active */
+.active {
+  padding: 0.8rem 1.5rem;
+  right: 6%;
 }
 
 body {

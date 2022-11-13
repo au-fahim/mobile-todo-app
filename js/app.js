@@ -6,6 +6,8 @@ const todoInput = document.querySelector(".todo-input");
 const todoAddBtn = document.querySelector(".todo-add-btn");
 const todoList = document.querySelector(".todo-container");
 
+const bodyTag = document.querySelector("body");
+const alertMsgBox = document.querySelector(".alert-msg");
 const todoText = document.querySelector(".todo-text");
 
 const unCheckedBtn = document.querySelector(".check-btn span:first-child");
@@ -30,16 +32,35 @@ function formPopupModel() {
   todoForm.classList.toggle("bottom-10");
 }
 
+// Alert Function
+function alertMsg(alertText, removeMsg) {
+  // Alert Div
+  alertMsgBox.classList.add("active");
+
+  // Alert Text come from paramiter
+  alertMsgBox.innerHTML = alertText;
+
+  if (removeMsg) {
+    alertMsgBox.classList.remove("active");
+    alertMsgBox.innerHTML = "";
+  }
+}
+
 function addTodo(e) {
   // Prevent form from submitting
   e.preventDefault();
-  // console.log(e.preventDefault());
 
   // Checking the input value are Empty or nor
 
   if (todoInput.value == "") {
-    alert("Please Enter Something");
+    // Alert Message
+    alertMsg("Please Enter Something");
+    setTimeout(() => {
+      alertMsg("", "true");
+    }, 4000);
   } else {
+    alertMsg("", "true");
+
     // Create Todo Item Element Design Template
 
     // todo DIV
@@ -78,7 +99,6 @@ function addTodo(e) {
     // Delete Button
     const deleteBtn = document.createElement("span");
     deleteBtn.classList.add("clear", "material-icons-round");
-    deleteBtn.setAttribute = "delete-btnan";
     deleteBtn.innerText = "clear";
 
     todoDiv.appendChild(deleteBtn);
@@ -97,29 +117,30 @@ function addTodo(e) {
 // Todo Check Mark and Delete
 function deleteCheck(e) {
   const item = e.target;
-  console.log(item);
 
   // Delete Todo
   if (item.classList[0] === "clear") {
     const todo = item.parentElement;
 
     todo.classList.add("fall");
+    todo.remove();
+
+    console.log("item is" + todo);
+
+    // Animation
+    // todo.addEventListener("transitionend", function () {
+    // });
 
     // Delete todo item from Local Storage
     removeLocalTodos(todo);
-
-    // Animation
-    todo.addEventListener("transitionend", function () {
-      todo.remove();
-    });
   }
 
   // Check Mark
   if (item.classList[0] === "check-btn") {
     const todo = item.parentElement;
     todo.classList.toggle("completed");
-    todoText.classList.toggle("text-line-through");
-    checkedBtn.classList.toggle("display-block");
+    // todoText.classList.toggle("text-line-through");
+    // checkedBtn.classList.toggle("display-block");
   }
 }
 
