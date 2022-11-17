@@ -2,27 +2,51 @@
 const formPopupBtn = document.querySelector(".form-popup-btn");
 const todoForm = document.querySelector(".todo-form");
 
+// Select item for todo Input
 const todoInput = document.querySelector(".todo-input");
 const todoAddBtn = document.querySelector(".todo-add-btn");
 const todoList = document.querySelector(".todo-container");
 
+// Select item for Alert Message
 const bodyTag = document.querySelector("body");
 const alertMsgBox = document.querySelector(".alert-msg");
 const todoText = document.querySelector(".todo-text");
 
+// Select item for Toggle Check Button
 const unCheckedBtn = document.querySelector(".check-btn span:first-child");
 const checkedBtn = document.querySelector(".check-btn span:last-child");
 
+// Select item for Create Category
+const categoryInput = document.querySelector(".catagory-select");
+const categoryAddBtn = document.querySelector(".category-create-btn");
+const categoryContainer = document.querySelector(".category-list");
+const categoryList = document.querySelector(".category-list-container");
+
 // EVENT LISTENER
-document.addEventListener("DOMContentLoaded", getLocalTodos);
+document.addEventListener("DOMContentLoaded", () => {
+  getLocalTodos();
+  getLocalCategorys();
+});
+
 formPopupBtn.addEventListener("click", formPopupModel);
 todoAddBtn.addEventListener("click", addTodo);
 todoList.addEventListener("click", deleteCheck);
 
-// document.addEventListener("click", checkElement);
-// function checkElement(e) {
+// Category Container Stow & Hide Event
+categoryInput.addEventListener("focus", (e) => {
+  categoryContainer.style.visibility = "visible";
+});
+categoryInput.addEventListener("blur", (e) => {
+  categoryContainer.style.visibility = "hidden";
+});
+
+// Events for Category Add
+categoryAddBtn.addEventListener("click", categoryAdd);
+categoryInput.addEventListener("click", categoryItemContainer);
+
+// document.addEventListener("click", (e) => {
 //   console.log(e.target);
-// }
+// });
 
 // FUNCTION
 
@@ -158,7 +182,7 @@ function deleteCheck(e) {
 //   unCheckedBtn.style.display = "block";
 // }
 
-// www www www www STORE DATA ON LOCAL STORAGE www www www www
+// www www www www STORE Todo Item ON LOCAL STORAGE www www www www
 
 function saveLocalTodos(todo) {
   let todos;
@@ -225,7 +249,7 @@ function getLocalTodos() {
     // Delete Button
     const deleteBtn = document.createElement("span");
     deleteBtn.classList.add("clear", "material-icons-round");
-    deleteBtn.setAttribute = "delete-btnan";
+    // deleteBtn.setAttribute = "delete-btnan";
     deleteBtn.innerText = "clear";
 
     todoDiv.appendChild(deleteBtn);
@@ -249,4 +273,67 @@ function removeLocalTodos(todo) {
   const todoIndex = todo.childNodes[0].innerText;
   todos.splice(todos.indexOf(todoIndex), 1);
   localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+// ### ### ### ### ### CREATE CATEGORY ITEM ### ### ### ### ###
+
+function categoryItemContainer(e) {}
+
+function categoryAdd(e) {
+  // Prevent form from submitting
+  e.preventDefault();
+
+  if (categoryInput.value == "") {
+  } else {
+    // let categoryItem = `<li class='category'>${categoryInput.value}</li>`;
+
+    // Create Category Item
+    let categoryLi = document.createElement("li");
+    categoryLi.classList.add("category");
+    categoryLi.innerHTML = categoryInput.value;
+
+    // Append the item to container
+    categoryList.append(categoryLi);
+
+    // Store Category Item in Local Storage
+    saveCategoryLocal(categoryInput.value);
+
+    // Reset the INPUT value
+    categoryInput.value = "";
+  }
+}
+
+// Save Category Item on Local Storage
+function saveCategoryLocal(category) {
+  let categorys;
+  // Check Any Data Alrady Have in Local Storage
+  if (localStorage.getItem("categorys") === null) {
+    categorys = [];
+  } else {
+    categorys = JSON.parse(localStorage.getItem("categorys"));
+  }
+
+  categorys.push(category);
+
+  localStorage.setItem("categorys", JSON.stringify(categorys));
+}
+
+function getLocalCategorys() {
+  let categorys;
+  // Check Any Data Alrady Have in Local Storage
+  if (localStorage.getItem("categorys") === null) {
+    categorys = [];
+  } else {
+    categorys = JSON.parse(localStorage.getItem("categorys"));
+  }
+
+  categorys.forEach(function (category) {
+    // Create Category Item
+    let categoryLi = document.createElement("li");
+    categoryLi.classList.add("category");
+    categoryLi.innerHTML = category;
+
+    // Append the item to container
+    categoryList.append(categoryLi);
+  });
 }
