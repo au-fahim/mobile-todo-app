@@ -7,6 +7,11 @@ const todoInput = document.querySelector(".todo-input");
 const todoAddBtn = document.querySelector(".todo-add-btn");
 const todoList = document.querySelector(".todo-container");
 
+// Select Categories CARDs
+const categoryCardContainer = document.querySelector(
+  ".categories-card-container"
+);
+
 // Select item for Alert Message
 const bodyTag = document.querySelector("body");
 const alertMsgBox = document.querySelector(".alert-msg");
@@ -26,6 +31,17 @@ const categoryList = document.querySelector(".category-list-container");
 document.addEventListener("DOMContentLoaded", () => {
   getLocalTodos();
   getLocalCategorys();
+
+  let categoryItem = document.querySelectorAll("li.category");
+
+  // Get Category item value
+  categoryItem.forEach((item) => {
+    item.addEventListener("click", (e) => {
+      categoryInput.value = e.currentTarget.innerHTML;
+    });
+  });
+
+  // Show Cagegories in Category Card
 });
 
 formPopupBtn.addEventListener("click", formPopupModel);
@@ -42,7 +58,6 @@ categoryInput.addEventListener("blur", (e) => {
 
 // Events for Category Add
 categoryAddBtn.addEventListener("click", categoryAdd);
-categoryInput.addEventListener("click", categoryItemContainer);
 
 // document.addEventListener("click", (e) => {
 //   console.log(e.target);
@@ -131,10 +146,10 @@ function addTodo(e) {
     todoList.appendChild(todoDiv);
 
     // Save Todos on Local Storage
-    saveLocalTodos(todoInput.value);
-
+    saveLocalTodos(todoInput.value, categoryInput.value);
     // Clear todo Input Value
     todoInput.value = "";
+    categoryInput.value = "";
   }
 }
 
@@ -148,8 +163,6 @@ function deleteCheck(e) {
 
     todo.classList.add("fall");
     todo.remove();
-
-    console.log("item is" + todo);
 
     // Animation
     // todo.addEventListener("transitionend", function () {
@@ -169,6 +182,7 @@ function deleteCheck(e) {
 }
 
 // unCheckedBtn.addEventListener("click", unChecked);
+
 // checkedBtn.addEventListener("click", checked);
 
 // // Unchecked Button
@@ -184,31 +198,30 @@ function deleteCheck(e) {
 
 // www www www www STORE Todo Item ON LOCAL STORAGE www www www www
 
-function saveLocalTodos(todo) {
-  let todos;
+function todosObj(todoText, todoCategory) {
+  this.todoText = todoText;
+  todoCategory == ""
+    ? (this.categorys = "")
+    : (this.todoCategory = todoCategory);
+}
 
+function saveLocalTodos(todo, category) {
   // Checking for Any prestored data on Local Storage
-  if (localStorage.getItem("todos") === null) {
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem("todos"));
-  }
+  let todos = JSON.parse(localStorage.getItem("todos")) || [];
+  let categorys = JSON.parse(localStorage.getItem("categorys")) || [];
 
-  todos.push(todo);
+  let newTodos = new todosObj(todo, category);
+
+  todos.push(newTodos);
+
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 // Get todos from local storage
 
 function getLocalTodos() {
-  let todos;
-
   // Checking for Any prestored data on Local Storage
-  if (localStorage.getItem("todos") === null) {
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem("todos"));
-  }
+  let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
   todos.forEach(function (todo) {
     // Create Todo Item Element Design Template
@@ -241,7 +254,7 @@ function getLocalTodos() {
 
     // Create List
     const newTodoText = document.createElement("h2");
-    newTodoText.innerHTML = todo;
+    newTodoText.innerHTML = todo.todoText;
     newTodoText.classList.add("todo-text");
 
     todoDiv.appendChild(newTodoText);
@@ -261,14 +274,8 @@ function getLocalTodos() {
 
 // Remove Todos from local Storage
 function removeLocalTodos(todo) {
-  let todos;
-  // console.log(todo);
   // Checking for Any prestored data on Local Storage
-  if (localStorage.getItem("todos") === null) {
-    todos = [];
-  } else {
-    todos = JSON.parse(localStorage.getItem("todos"));
-  }
+  let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
   const todoIndex = todo.childNodes[0].innerText;
   todos.splice(todos.indexOf(todoIndex), 1);
@@ -276,8 +283,6 @@ function removeLocalTodos(todo) {
 }
 
 // ### ### ### ### ### CREATE CATEGORY ITEM ### ### ### ### ###
-
-function categoryItemContainer(e) {}
 
 function categoryAdd(e) {
   // Prevent form from submitting
@@ -305,13 +310,8 @@ function categoryAdd(e) {
 
 // Save Category Item on Local Storage
 function saveCategoryLocal(category) {
-  let categorys;
   // Check Any Data Alrady Have in Local Storage
-  if (localStorage.getItem("categorys") === null) {
-    categorys = [];
-  } else {
-    categorys = JSON.parse(localStorage.getItem("categorys"));
-  }
+  let categorys = JSON.parse(localStorage.getItem("categorys")) || [];
 
   categorys.push(category);
 
@@ -319,21 +319,29 @@ function saveCategoryLocal(category) {
 }
 
 function getLocalCategorys() {
-  let categorys;
   // Check Any Data Alrady Have in Local Storage
-  if (localStorage.getItem("categorys") === null) {
-    categorys = [];
-  } else {
-    categorys = JSON.parse(localStorage.getItem("categorys"));
-  }
+  let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-  categorys.forEach(function (category) {
+  todos.forEach((todo) => {
     // Create Category Item
     let categoryLi = document.createElement("li");
     categoryLi.classList.add("category");
-    categoryLi.innerHTML = category;
+    categoryLi.innerHTML = todo.todoCategory;
 
     // Append the item to container
     categoryList.append(categoryLi);
   });
+  // Show on top Category Card
+  let categoryCard = todos
+    .map((item) => {
+      return `
+      <article class="categories-card">
+        <h4 class="total-task">10 task</h4>
+        <h2 class="categories-type">${item.todoCategory}</h2>
+        <div class="progress-bar"></div>
+      </article>`;
+    })
+    .join("");
+
+  categoryCardContainer.innerHTML = categoryCard;
 }
