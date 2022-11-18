@@ -201,7 +201,7 @@ function deleteCheck(e) {
 function todosObj(todoText, todoCategory) {
   this.todoText = todoText;
   todoCategory == ""
-    ? (this.categorys = "")
+    ? (this.todoCategory = "none")
     : (this.todoCategory = todoCategory);
 }
 
@@ -223,12 +223,15 @@ function getLocalTodos() {
   // Checking for Any prestored data on Local Storage
   let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
+  let counter = 0;
   todos.forEach(function (todo) {
     // Create Todo Item Element Design Template
 
     // todo DIV
     const todoDiv = document.createElement("article");
     todoDiv.classList.add("todo-card");
+
+    todoDiv.setAttribute("id", counter++);
 
     // Check Mark BUTTON Container
     const checkBtnContainer = document.createElement("div");
@@ -277,8 +280,11 @@ function removeLocalTodos(todo) {
   // Checking for Any prestored data on Local Storage
   let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-  const todoIndex = todo.childNodes[0].innerText;
-  todos.splice(todos.indexOf(todoIndex), 1);
+  const currentTodo = todo.id;
+  console.log(currentTodo);
+  const todoIndex = todo.childNodes[1].innerText;
+
+  todos.splice(currentTodo, 1);
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
@@ -331,17 +337,30 @@ function getLocalCategorys() {
     // Append the item to container
     categoryList.append(categoryLi);
   });
+
+  // Ignore Duplicate VAlUE From todo categories Card
+  let reduceCategory = todos.reduce((currentValue, previousValue) => {
+    if (!currentValue.includes(previousValue.todoCategory)) {
+      currentValue.push(previousValue.todoCategory);
+    }
+
+    return currentValue;
+  }, []);
+
+  console.log(reduceCategory);
+
   // Show on top Category Card
-  let categoryCard = todos
+  let categoryCard = reduceCategory
     .map((item) => {
       return `
       <article class="categories-card">
         <h4 class="total-task">10 task</h4>
-        <h2 class="categories-type">${item.todoCategory}</h2>
+        <h2 class="categories-type">${item}</h2>
         <div class="progress-bar"></div>
       </article>`;
     })
     .join("");
+  // console.log(categoryCard);
 
   categoryCardContainer.innerHTML = categoryCard;
 }
